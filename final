@@ -1,0 +1,38 @@
+//code inspo from http://code.compartmental.net/minim/minim_method_loadfile.html
+import ddf.minim.*;
+import ddf.minim.signals.*;
+
+Minim minim;
+AudioPlayer player;
+
+void setup() {
+  size(500, 500, P3D);
+  noStroke();
+  rectMode(CENTER);
+  minim = new Minim(this);
+  player = minim.loadFile("DrunkDazed.mp3");
+  player.loop();
+  
+}
+int n=0;
+void draw(){
+  background(0);
+  translate(width/2,height/2);
+  for (int i = 0; i < player.bufferSize() - 1; i++) {
+    rotateX(n*-PI/9*0.001);
+    fill(102, 0, 153);
+    float leftLevel = player.left.level() * 60;
+    ellipse(i, i, leftLevel, leftLevel);
+    rotateZ(n*-PI/9*0.002);
+    fill(51, 204, 255);
+    float rightLevel = player.right.level() * 60;
+    rect(i, i, rightLevel, rightLevel);
+  }
+  n++;
+}
+
+void stop() {
+  player.close();
+  minim.stop();
+  super.stop();
+}
